@@ -1,0 +1,5 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Power
+Exec=rofi -show pw -modi pw:rs-rofi-power
