@@ -12,35 +12,40 @@ fn reboot() -> Result<Output, std::io::Error> {
 }
 
 fn main() {
-    let mut args = env::args();
+    let args: Vec<String> = env::args().collect();
 
-    match args.nth(1).as_ref() {
-        Some(a) => match a.to_lowercase().as_str() {
-            "ok" => match env::var("ROFI_INFO") {
-                Ok(val) => match val.as_str() {
-                    "shutdown" => {
-                        let _ = shutdown();
-                    }
-                    "reboot" => {
-                        let _ = reboot();
-                    }
-                    _ => {}
-                },
+    if args.len() < 2 {
+        println!("\0prompt\x1fSelect action");
+        println!("Shutdown\0info\x1fshutdown");
+        println!("Reboot\0info\x1freboot");
+        println!("Cancel");
+        return;
+    }
+
+    match args[1].to_lowercase().as_str() {
+        "ok" => match env::var("ROFI_INFO") {
+            Ok(val) => match val.as_str() {
+                "shutdown" => {
+                    let _ = shutdown();
+                }
+                "reboot" => {
+                    let _ = reboot();
+                }
                 _ => {}
             },
-            "reboot" => {
-                println!("\0prompt\x1fAre you sure you want to reboot?");
-                println!("OK\0info\x1freboot");
-                println!("Cancel");
-            }
-            "shutdown" => {
-                println!("\0prompt\x1fAre you sure you want to shutdown?");
-                println!("OK\0info\x1fshutdown");
-                println!("Cancel");
-            }
             _ => {}
         },
-        None => {
+        "reboot" => {
+            println!("\0prompt\x1fAre you sure you want to reboot?");
+            println!("OK\0info\x1freboot");
+            println!("Cancel");
+        }
+        "shutdown" => {
+            println!("\0prompt\x1fAre you sure you want to shutdown?");
+            println!("OK\0info\x1fshutdown");
+            println!("Cancel");
+        }
+        _ => {
             println!("\0prompt\x1fSelect action");
             println!("Shutdown\0info\x1fshutdown");
             println!("Reboot\0info\x1freboot");
