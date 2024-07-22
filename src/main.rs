@@ -4,11 +4,11 @@ use std::{
 };
 
 fn shutdown() -> Result<Output, std::io::Error> {
-    return Command::new("shutdown").arg("0").output();
+    Command::new("shutdown").arg("0").output()
 }
 
 fn reboot() -> Result<Output, std::io::Error> {
-    return Command::new("reboot").output();
+    Command::new("reboot").output()
 }
 
 fn main() {
